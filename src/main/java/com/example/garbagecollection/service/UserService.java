@@ -13,4 +13,5 @@ public interface UserService {
     User updateDriver(Long id, UserRequestDTO userRequestDTO);
     void deleteDriver(Long id);
     Optional<User> getDriverByEmail(String mail);
+    List<User> getUsersWithoutVehicles();
 }

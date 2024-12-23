@@ -70,6 +70,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    public List<User> getUsersWithoutVehicles() {
+        return userRepository.findUsersWithoutVehicles();
+    }
+
 
     public void updateUserFields(User user, UserRequestDTO dto) {
         user.setFirstName(dto.getFirstName());

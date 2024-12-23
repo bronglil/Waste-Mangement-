@@ -50,5 +50,8 @@ public class UserController {
         userService.deleteDriver(id);
     }
 
-
+    @GetMapping("/available-vehicles")
+    public List<User> getUsersWithoutVehicles() {
+        return userService.getUsersWithoutVehicles();
+    }
 }
