@@ -21,16 +21,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/**",
-                                "/api/auth/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/console/**").permitAll() // Allow access to these endpoints without authentication
+//                        .requestMatchers(
+//                                "/api/**",
+//                                "/api/auth/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-ui/**",
+//                                "/swagger-ui.html",
+//                                "/console/**").permitAll() // Allow access to these endpoints without authentication
                         .anyRequest().permitAll() // Allow all other requests without authentication
                 )
-                .headers(headers -> headers.frameOptions().disable()) // Disable frame options
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // Disable frame options
                 .httpBasic(Customizer.withDefaults()); // Use basic authentication if needed
 
         return http.build();

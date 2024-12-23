@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 
 @OpenAPIDefinition(
-        info = @Info(title = "Garbage Collection API", version = "1.0"),
+        info = @Info(title = "Garbage Collection API", version = "1.0", description = "API endpoints for waste management system"),
         security = @SecurityRequirement(name = "basicAuth")
 )
 @SecurityScheme(
