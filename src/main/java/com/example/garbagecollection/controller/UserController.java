@@ -1,6 +1,7 @@
 package com.example.garbagecollection.controller;
 
 import com.example.garbagecollection.dto.UserRequestDTO;
+import com.example.garbagecollection.dto.UserResponseDTO;
 import com.example.garbagecollection.entity.User;
 import com.example.garbagecollection.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -38,8 +39,8 @@ public class UserController {
         return "Welcome to the driver homepage";
     }
     @PostMapping
-    public ResponseEntity<User> createDriver(@RequestBody UserRequestDTO userRequestDTO) {
-        return ResponseEntity.ok(userService.createDriver(userRequestDTO));
+    public ResponseEntity<UserResponseDTO> createDriver(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.createUser(userRequestDTO);
     }
     @PutMapping("/{id}")
     public User updateDriver(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
