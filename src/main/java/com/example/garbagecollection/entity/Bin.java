@@ -2,14 +2,15 @@ package com.example.garbagecollection.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "bins")
 public class Bin {
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,45 +18,60 @@ public class Bin {
     private double latitude;
     private double longitude;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Setter
     private LocalDateTime lastUpdated;
 
+    @Setter
+    private String sensorData; // Store JSON as a String
 
+    @Setter
+    private String locationName; // New field for location name
 
-    private String sensorData;
-
-    public void setLatitude(@NotNull double latitude) {
-    }
-
-    public void setLongitude(@NotNull double longitude) {
-    }
-
-    public void setStatus(Status status) {
-    }
-
-    public void setLastUpdated(LocalDateTime now) {
+    // Getters and Setters
+    public Long getId() {
+        return id;
     }
 
     public double getLatitude() {
-        return 0;
+        return latitude;
+    }
+
+    public void setLatitude(@NotNull double latitude) {
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
-        return 0;
+        return longitude;
     }
 
-    public enum Status {
-        FULL, EMPTY
+    public void setLongitude(@NotNull double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
     }
 
     public String getSensorData() {
         return sensorData;
     }
 
-    public void setSensorData(String sensorData) {
-        this.sensorData = sensorData;
+    public String getLocationName() {
+        return locationName;
     }
+
+    public enum Status {
+        FULL, EMPTY
+    }
+
+
 
 }

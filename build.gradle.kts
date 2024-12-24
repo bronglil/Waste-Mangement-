@@ -64,6 +64,10 @@ dependencies {
 	//sending emails
 	implementation ("org.springframework.boot:spring-boot-starter-mail")
 	implementation ("jakarta.mail:jakarta.mail-api:2.1.0")
+
+	implementation ("com.fasterxml.jackson.core:jackson-databind:2.14.0")
+	implementation ("com.fasterxml.jackson.core:jackson-core:2.14.0")
+	implementation ("com.fasterxml.jackson.core:jackson-annotations:2.14.0")
 }
 
 
