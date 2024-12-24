@@ -18,7 +18,7 @@ public class Vehicle {
     private String plateNumber;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = true)
+    @JoinColumn(name = "userId")
     private User user;
 
     // Getters and Setters

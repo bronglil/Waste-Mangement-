@@ -15,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByFirstNameAndRole(String firstName, User.UserRole role);
     Optional<User> findByEmail(String email);
     Optional<Object> getDriverByEmail(String email);
-    @Query("SELECT u FROM User u WHERE u.userId NOT IN (SELECT v.user.userId FROM Vehicle v) AND u.role = 'driver' ")
+    @Query("SELECT u FROM User u LEFT JOIN Vehicle v ON u.userId = v.user.userId " +
+            "WHERE v.user.userId IS NULL AND u.role = 'DRIVER'")
     List<User> findUsersWithoutVehicles();
 }

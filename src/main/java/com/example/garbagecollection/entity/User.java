@@ -41,9 +41,6 @@ public class User {
     @Column(nullable = false)
     private String token;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "vehicleId", unique = true)
-//    private Vehicle vehicle;
 
     // Enum for Role
     public enum UserRole {

@@ -43,7 +43,8 @@ public class VehicleServiceImpl implements VehicleService {
         }
 
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
-        return mapToDto(savedVehicle);
+        return  null;
+//        return mapToDto(savedVehicle);
     }
 
     @Override
