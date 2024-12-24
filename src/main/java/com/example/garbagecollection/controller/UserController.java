@@ -29,19 +29,22 @@ public class UserController {
     public ResponseEntity<User> getDriverById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getDriverById(id));
     }
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public List<User> getDriversByName(@PathVariable String name) {
         return userService.getDriversByName(name);
     }
+
     @GetMapping("/dash")
     @PreAuthorize("hasAuthority('DRIVER')")
     public String DriverScreen() {
         return "Welcome to the driver homepage";
     }
+
     @PostMapping
     public ResponseEntity<UserResponseDTO> createDriver(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.createUser(userRequestDTO);
     }
+
     @PutMapping("/{id}")
     public User updateDriver(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         return userService.updateDriver(id, userRequestDTO);
@@ -55,4 +58,5 @@ public class UserController {
     public List<User> getUsersWithoutVehicles() {
         return userService.getUsersWithoutVehicles();
     }
+
 }
