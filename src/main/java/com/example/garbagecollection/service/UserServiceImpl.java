@@ -1,5 +1,6 @@
 package com.example.garbagecollection.service;
 
+import com.example.garbagecollection.controller.EmailController;
 import com.example.garbagecollection.dto.LoginRequestDTO;
 import com.example.garbagecollection.dto.LoginResponseDTO;
 import com.example.garbagecollection.dto.UserRequestDTO;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtUtil jwtUtil; // Inject JwtUtil
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private EmailController emailController;
 
 // Driver Services
     @Override
@@ -38,14 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getDriverById(Long id) {
-        return userRepository.findByIdAndRole(id, User.UserRole.DRIVER)
-                .orElseThrow(() -> new RuntimeException("Driver not found with ID: " + id));
+    public User getDriverById(Long userId) {
+        return userRepository.findByIdAndRole(userId, User.UserRole.DRIVER)
+                .orElseThrow(() -> new RuntimeException("Driver not found with ID: " + userId));
     }
-//    @Override
-//    User getDriverByName(String name){
-//        return "driver name";
-//    }
+
     @Override
     public Optional<User> getDriverByEmail(String email) {
         System.out.println("emailemailemailemailemailemail");
@@ -66,8 +68,9 @@ public class UserServiceImpl implements UserService {
         User user = getDriverById(id);
         userRepository.delete(user);
     }
-    @Override
-    public ResponseEntity<UserResponseDTO> createUser(UserRequestDTO userRequestDTO){
+
+
+    public ResponseEntity<UserResponseDTO> createUser(UserRequestDTO userRequestDTO) {
         Optional<User> existingUser = userRepository.findByEmail(userRequestDTO.getEmail());
         if (existingUser.isPresent()) {
             throw new RuntimeException("User already exists");
@@ -79,25 +82,62 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userRequestDTO.getLastName());
         user.setContactNumber(userRequestDTO.getContactNumber());
         user.setEmail(userRequestDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+
+        // If the role is ADMIN, generate a random password
+        String passwordToUse;
         if (userRequestDTO.getUserRole() != null) {
             user.setRole(User.UserRole.valueOf(userRequestDTO.getUserRole().toUpperCase()));
+            if (user.getRole() == User.UserRole.ADMIN) {
+                passwordToUse = generateRandomPassword(); // Generate a random password
+            } else {
+                // Use the password from the request if not an ADMIN
+                passwordToUse = userRequestDTO.getPassword();
+            }
         } else {
             throw new RuntimeException("User role is required");
         }
+
+        // Set password and encode it
+        user.setPassword(passwordEncoder.encode(passwordToUse));
+
         user.setStatus(User.UserStatus.ACTIVE);
         user.setToken(token);
         userRepository.save(user);
-        UserResponseDTO user_response = new UserResponseDTO();
-        user_response.setFirstName(user.getFirstName());
-        user_response.setLastName(user.getLastName());
-        user_response.setEmail(user.getEmail());
-        user_response.setContactNumber(user.getContactNumber());
-        user_response.setUserRole(user.getRole());
-        user_response.setToken(user.getToken());
 
-        return  ResponseEntity.ok(user_response);
+        // If user role is ADMIN, send the generated password via email
+        if (user.getRole() == User.UserRole.ADMIN) {
+            emailController.sendUserEmail(user.getEmail(), passwordToUse); // Send the generated password
+        }
+
+        // Prepare the response
+        UserResponseDTO userResponse = new UserResponseDTO();
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setContactNumber(user.getContactNumber());
+        userResponse.setUserRole(user.getRole());
+        userResponse.setToken(user.getToken());
+
+        return ResponseEntity.ok(userResponse);
     }
+
+    // Helper method to generate a random 6 to 8 digit password
+    private String generateRandomPassword() {
+        SecureRandom random = new SecureRandom();
+        int length = 6 + random.nextInt(3);  // Generate a password length between 6 and 8
+        StringBuilder password = new StringBuilder(length);
+
+        // Define the characters to include in the password
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            password.append(characters.charAt(index));
+        }
+
+        return password.toString();
+    }
+
 
     @Override
     public List<User> getUsersWithoutVehicles() {
@@ -125,6 +165,7 @@ public class UserServiceImpl implements UserService {
         login_response.setEmail(user.getEmail());
         login_response.setContactNumber(user.getContactNumber());
         login_response.setUserRole(user.getRole());
+        login_response.setUserId(user.getId());
        login_response.setToken(user.getToken());
 
         return ResponseEntity.ok(login_response);
