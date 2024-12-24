@@ -14,11 +14,11 @@ public class Vehicle {
     @Column(nullable = false)
     private String vehicleBrand;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String plateNumber;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     // Getters and Setters
@@ -46,11 +46,11 @@ public class Vehicle {
         this.plateNumber = plateNumber;
     }
 
-    public User getDriver() {
+    public User getUser() {
         return user;
     }
 
-    public void setDriver(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

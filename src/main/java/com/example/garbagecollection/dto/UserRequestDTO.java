@@ -8,7 +8,7 @@ import com.example.garbagecollection.entity.User;
 
 @Data
 public class UserRequestDTO {
-
+    private Long userId;
     @NotBlank(message = "First name is required")
     @Size(max = 50, message = "First name must not exceed 50 characters")
     private String firstName;
@@ -29,15 +29,15 @@ public class UserRequestDTO {
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
-    private String userRole; // Optional field for user role
+    private String userRole;
 
-//     Constructor to map User entity to UserRequestDTO
-//    public UserRequestDTO(User user) {
-//        this.firstName = user.getFirstName();
-//        this.lastName = user.getLastName();
-//        this.contactNumber = user.getContactNumber();
-//        this.email = user.getEmail();
-//    }
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long id) {
+        this.userId = id;
+    }
 
     public String getFirstName() {
         return firstName;

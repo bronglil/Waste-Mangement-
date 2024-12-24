@@ -1,14 +1,17 @@
 package com.example.garbagecollection.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 
 public class VehicleRequestDto {
 
     private Long vehicleId;
+
+    @NotBlank(message = "Vehicle brand must not be blank")
     private String vehicleBrand;
+    @NotBlank(message = "Plate number must not be blank")  // Add this line
     private String plateNumber;
-    private Long driverId;
+    private Long userId;      // Driver's user ID (previously driverId)
+    private DriverDto driver;
 
     // Getters and Setters
     public Long getVehicleId() {
@@ -35,11 +38,19 @@ public class VehicleRequestDto {
         this.plateNumber = plateNumber;
     }
 
-    public Long getDriverId() {
-        return driverId;
+    public Long getUserId() {
+        return userId; // Getter for user ID
     }
 
-    public void setDriverId(Long driverId) {
-        this.driverId = driverId;
+    public void setUserId(Long userId) {
+        this.userId = userId; // Setter for user ID
+    }
+
+    public DriverDto getDriver() {
+        return driver;
+    }
+
+    public void setDriver(DriverDto driver) {
+        this.driver = driver;
     }
 }

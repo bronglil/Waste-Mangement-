@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
         user.setStatus(User.UserStatus.ACTIVE);
         user.setToken(token);
         userRepository.save(user);
-//        preparing user response
         UserResponseDTO user_response = new UserResponseDTO();
         user_response.setFirstName(user.getFirstName());
         user_response.setLastName(user.getLastName());
@@ -98,6 +97,11 @@ public class UserServiceImpl implements UserService {
         user_response.setToken(user.getToken());
 
         return  ResponseEntity.ok(user_response);
+    }
+
+    @Override
+    public List<User> getUsersWithoutVehicles() {
+        return userRepository.findUsersWithoutVehicles();
     }
 
     @Override
@@ -115,7 +119,6 @@ public class UserServiceImpl implements UserService {
         }
         System.out.println("user: " + user);
 
-// Preparing Login Response DTO
         LoginResponseDTO login_response = new LoginResponseDTO();
         login_response.setFirstName(user.getFirstName());
         login_response.setLastName(user.getLastName());

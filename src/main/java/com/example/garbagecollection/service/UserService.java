@@ -15,7 +15,7 @@ public interface UserService {
     ResponseEntity<LoginResponseDTO> loginUser(LoginRequestDTO loginRequest);
     User updateDriver(Long id, UserRequestDTO userRequestDTO);
     void deleteDriver(Long id);
-
+    List<User> getUsersWithoutVehicles();
     List<User> getAllDrivers();
     User getDriverById(Long userId);
 //    User getDriverByName(String name);
