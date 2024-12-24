@@ -26,35 +26,31 @@ class AdminController {
     @Autowired
     private AdminService adminService;
 
-//    @GetMapping
-//    public ResponseEntity<List<User>> getAllAdmins() {
-//
-//        return ResponseEntity.ok(userService.getAllAdmins());
-//    }
+    @GetMapping
+    public ResponseEntity<List<User>> getAllAdmins() {
 
-//    @GetMapping("/{id}")
-//    public User getAdminById(@PathVariable Long id) {
-//        return userService.getAdminById(id);
-//    }
-//    @GetMapping("/{name}")
-//    public List<User> getAdminsByName(@PathVariable String name) {
-//        return userService.getAdminsByName(name);
-//    }
-//    @GetMapping("/dash")
-//    @PreAuthorize("hasAuthority('ADMIN')")
-//    public String AdminScreen() {
-//        return "Welcome to the ADMIN homepage";
-//    }
+        return ResponseEntity.ok(adminService.getAllAdmins());
+    }
+
+    @GetMapping("/{id}")
+    public User getAdminById(@PathVariable Long id) {
+        return adminService.getAdminById(id);
+    }
+    @GetMapping("/{name}")
+    public List<User> getAdminsByName(@PathVariable String name) {
+        return adminService.getAdminsByName(name);
+    }
+
 //    @PostMapping
 //    public ResponseEntity<User> createAdmin(@RequestBody UserRequestDTO userRequestDTO) {
 //        return ResponseEntity.ok(userService.createAdmin(userRequestDTO));
 //    }
-//    @PutMapping("/{id}")
-//    public User updateAdmin(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
-//        return userService.updateAdmin(id, userRequestDTO);
-//    }
-//    @DeleteMapping("/{id}")
-//    public void deleteAdmin(@PathVariable Long id) {
-//        userService.deleteAdmin(id);
-//    }
+    @PutMapping("/{id}")
+    public User updateAdmin(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
+        return adminService.updateAdmin(id, userRequestDTO);
+    }
+    @DeleteMapping("/{id}")
+    public void deleteAdmin(@PathVariable Long id) {
+        adminService.deleteAdmin(id);
+    }
 }
