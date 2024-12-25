@@ -7,7 +7,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.garbagecollection.service.GeocodingService;
+
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bins")
@@ -16,6 +19,10 @@ public class BinController {
 
     @Autowired
     private BinService binService;
+
+    @Autowired
+    private GeocodingService geocodingService;
+
 
     @GetMapping
     public ResponseEntity<List<Bin>> getAllBins() {
@@ -42,4 +49,10 @@ public class BinController {
         binService.deleteBin(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/location")
+    public List<Map> getLocationData(@RequestParam String location) {
+        return geocodingService.getLocationDataByName(location);
+    }
+
 }
