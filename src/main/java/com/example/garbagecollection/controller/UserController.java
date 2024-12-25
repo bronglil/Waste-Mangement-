@@ -33,6 +33,7 @@ public class UserController {
     public ResponseEntity<User> getDriverById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getDriverById(id));
     }
+
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "drivers by name", description = "get drivers by name")
@@ -49,6 +50,7 @@ public class UserController {
     public User updateDriver(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         return userService.updateDriver(id, userRequestDTO);
     }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "delete driver by id", description = "get driver by id and delete the driver")
     public void deleteDriver(@PathVariable Long id) {
