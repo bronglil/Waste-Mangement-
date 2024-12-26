@@ -42,6 +42,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5") // for JSON processing
+	implementation("javax.servlet:javax.servlet-api:4.0.1")
+	implementation("javax.servlet:javax.servlet-api:4.0.1")
+
 
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")

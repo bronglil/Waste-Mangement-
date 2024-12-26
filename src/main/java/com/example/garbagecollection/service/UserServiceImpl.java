@@ -17,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -63,10 +65,17 @@ public class UserServiceImpl implements UserService {
         updateUserFields(user, userRequestDTO);
         return userRepository.save(user);
     }
+
     @Override
-    public void deleteDriver(Long id) {
+    public ResponseEntity<Map<String, Object>> deleteDriver(Long id) {
         User user = getDriverById(id);
         userRepository.delete(user);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "User successfully deleted");
+        response.put("userId", id);
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -83,10 +92,11 @@ public class UserServiceImpl implements UserService {
         user.setContactNumber(userRequestDTO.getContactNumber());
         user.setEmail(userRequestDTO.getEmail());
 
-        // If the role is ADMIN, generate a random password
+
         String passwordToUse;
         if (userRequestDTO.getUserRole() != null) {
             user.setRole(User.UserRole.valueOf(userRequestDTO.getUserRole().toUpperCase()));
+            // If the role is ADMIN, generate a random password
             if (user.getRole() == User.UserRole.ADMIN) {
                 passwordToUse = generateRandomPassword(); // Generate a random password
             } else {
@@ -172,11 +182,32 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateUserFields(User user, UserRequestDTO dto) {
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setContactNumber(dto.getContactNumber());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        if(dto.getFirstName() != null){
+            user.setFirstName(dto.getFirstName());
+        }
+        if (dto.getLastName() != null){
+            user.setLastName(dto.getLastName());
+        }
+        if (dto.getContactNumber() != null){
+            user.setContactNumber(dto.getContactNumber());
+        }
+        if(dto.getEmail() != null){
+            if (!(user.getEmail().equals(dto.getEmail())))
+            {
+                user.setEmail(dto.getEmail());
+            }
+
+        }
+        if (dto.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        if (dto.getUserRole() != null){
+            user.setRole(User.UserRole.valueOf(dto.getUserRole().toUpperCase()));
+        }
+        if (dto.getUserStatus() != null){
+            user.setStatus(User.UserStatus.valueOf(dto.getUserStatus().toUpperCase()));
+        }
+
 
     }
 }

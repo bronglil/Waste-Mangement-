@@ -31,6 +31,8 @@ public class UserRequestDTO {
 
     private String userRole;
 
+    private String userStatus;
+
     public Long getUserId() {
         return userId;
     }
@@ -86,6 +88,12 @@ public class UserRequestDTO {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
+    public String getUserStatus() {
+        return userStatus;
+    }
 
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
 
 }
