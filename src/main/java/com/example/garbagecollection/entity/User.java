@@ -49,9 +49,17 @@ public class User {
 
     // Enum for Status
     public enum UserStatus {
-        ACTIVE, INACTIVE
+//        ACTIVE, INACTIVE, PENDING
+
+        ACTIVE, INACTIVE, PENDING
     }
 
+    @PrePersist
+    protected void prePersist() {
+        if (status == null) {
+            status = UserStatus.PENDING; // Set your desired default value
+        }
+    }
     // Getters and Setters
     public Long getId() {
         return userId;
