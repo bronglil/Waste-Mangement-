@@ -40,15 +40,20 @@ public class AuthenticationController {
     @Autowired
     private JwtUtil jwtUtil; // Inject JwtUtil
 
+//    @PostMapping("/signup")
+//    @Operation(summary = "signup users", description = "add new users")
+//    public ResponseEntity<UserResponseDTO> signup(@Valid  @RequestBody UserRequestDTO signupRequest, BindingResult result) {
+//        return userService.createUser(signupRequest);
+//    }
+
     @PostMapping("/signup")
     @Operation(summary = "signup users", description = "add new users")
-    public ResponseEntity<UserResponseDTO> signup(@Valid  @RequestBody UserRequestDTO signupRequest, BindingResult result) {
+    public ResponseEntity<?> signup(@Valid @RequestBody UserRequestDTO signupRequest) {
         return userService.createUser(signupRequest);
     }
-
     @PostMapping("/login")
     @Operation(summary = "Login users", description = "Allows access for authorized users to use the system")
-    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequest, BindingResult result) {
-       return userService.loginUser(loginRequest);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequest) {
+        return userService.loginUser(loginRequest);
     }
 }
