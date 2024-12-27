@@ -10,9 +10,11 @@ import com.example.garbagecollection.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,13 +42,13 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     @Operation(summary = "signup users", description = "add new users")
-    public ResponseEntity<UserResponseDTO> signup(@RequestBody UserRequestDTO signupRequest) {
+    public ResponseEntity<UserResponseDTO> signup(@Valid  @RequestBody UserRequestDTO signupRequest, BindingResult result) {
         return userService.createUser(signupRequest);
     }
 
     @PostMapping("/login")
     @Operation(summary = "Login users", description = "Allows access for authorized users to use the system")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequest, BindingResult result) {
        return userService.loginUser(loginRequest);
     }
 }

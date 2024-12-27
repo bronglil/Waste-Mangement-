@@ -6,6 +6,7 @@ import com.example.garbagecollection.dto.LoginResponseDTO;
 import com.example.garbagecollection.dto.UserRequestDTO;
 import com.example.garbagecollection.dto.UserResponseDTO;
 import com.example.garbagecollection.entity.User;
+import com.example.garbagecollection.exception.UserAlreadyExistsException;
 import com.example.garbagecollection.repository.UserRepository;
 import com.example.garbagecollection.util.JwtUtil;
 import org.slf4j.Logger;
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<UserResponseDTO> createUser(UserRequestDTO userRequestDTO) {
         Optional<User> existingUser = userRepository.findByEmail(userRequestDTO.getEmail());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new UserAlreadyExistsException("User with email " + userRequestDTO.getEmail() + " already exists");
         }
 
         User user = new User();
@@ -91,9 +92,8 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userRequestDTO.getLastName());
         user.setContactNumber(userRequestDTO.getContactNumber());
         user.setEmail(userRequestDTO.getEmail());
+        String passwordToUse = "";
 
-
-        String passwordToUse;
         if (userRequestDTO.getUserRole() != null) {
             user.setRole(User.UserRole.valueOf(userRequestDTO.getUserRole().toUpperCase()));
             // If the role is ADMIN, generate a random password
@@ -103,21 +103,22 @@ public class UserServiceImpl implements UserService {
                 // Use the password from the request if not an ADMIN
                 passwordToUse = userRequestDTO.getPassword();
             }
-        } else {
-            throw new RuntimeException("User role is required");
         }
-
         // Set password and encode it
         user.setPassword(passwordEncoder.encode(passwordToUse));
-
-        user.setStatus(User.UserStatus.ACTIVE);
-        user.setToken(token);
-        userRepository.save(user);
-
         // If user role is ADMIN, send the generated password via email
         if (user.getRole() == User.UserRole.ADMIN) {
             emailController.sendUserEmail(user.getEmail(), passwordToUse); // Send the generated password
+            user.setStatus(User.UserStatus.ACTIVE);
         }
+        else{
+            user.setStatus(User.UserStatus.PENDING);
+        }
+
+        user.setToken(token);
+        userRepository.save(user);
+
+
 
         // Prepare the response
         UserResponseDTO userResponse = new UserResponseDTO();
@@ -160,7 +161,7 @@ public class UserServiceImpl implements UserService {
 
         // Find user by email
         User user = (User) userRepository.getDriverByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserAlreadyExistsException("user with email: " + loginRequest.getEmail() + " not found"));
 
 
         // Validate password
@@ -176,7 +177,7 @@ public class UserServiceImpl implements UserService {
         login_response.setContactNumber(user.getContactNumber());
         login_response.setUserRole(user.getRole());
         login_response.setUserId(user.getId());
-       login_response.setToken(user.getToken());
+        login_response.setToken(user.getToken());
 
         return ResponseEntity.ok(login_response);
     }

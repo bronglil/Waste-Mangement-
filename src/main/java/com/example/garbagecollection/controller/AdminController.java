@@ -59,32 +59,32 @@ class AdminController {
         adminService.deleteAdmin(id);
     }
 
-    @GetMapping("/drivers/")
+    @GetMapping("/get_drivers")
     @Operation(summary = "all drivers", description = "get a list of all drivers")
     public ResponseEntity<List<User>> getAllDrivers() {
 
         return ResponseEntity.ok(userService.getAllDrivers());
     }
 
-    @GetMapping("/drivers/{id}")
+    @GetMapping("/get_driver/{id}")
     @Operation(summary = "single driver by id", description = "get a single driver by id")
     public ResponseEntity<User> getDriverById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getDriverById(id));
     }
 
-    @PostMapping("/drivers/create_driver")
+    @PostMapping("/create_driver")
     @Operation(summary = "add a driver", description = "add a new driver")
     public ResponseEntity<UserResponseDTO> createDriver(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.createUser(userRequestDTO);
     }
 
-    @PutMapping("/drivers/update/{id}")
+    @PutMapping("/update_driver/{id}")
     @Operation(summary = "update driver by id", description = "get driver by id and update information related to the driver")
     public User updateDriver(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         return userService.updateDriver(id, userRequestDTO);
     }
 
-    @DeleteMapping("/drivers/remove/{id}")
+    @DeleteMapping("/remove_driver/{id}")
     @Operation(summary = "delete driver by id", description = "get driver by id and delete the driver")
     public ResponseEntity<Map<String, Object>> deleteDriver(@PathVariable Long id) {
         return userService.deleteDriver(id);

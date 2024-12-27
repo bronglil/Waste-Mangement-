@@ -49,7 +49,7 @@ public class User {
 
     // Enum for Status
     public enum UserStatus {
-        ACTIVE, INACTIVE
+        ACTIVE, INACTIVE, PENDING
     }
 
     // Getters and Setters
