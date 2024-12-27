@@ -49,8 +49,6 @@ public class User {
 
     // Enum for Status
     public enum UserStatus {
-//        ACTIVE, INACTIVE, PENDING
-
         ACTIVE, INACTIVE, PENDING
     }
 

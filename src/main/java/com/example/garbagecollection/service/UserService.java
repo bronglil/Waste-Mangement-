@@ -19,7 +19,6 @@ public interface UserService {
     List<User> getUsersWithoutVehicles();
     List<User> getAllDrivers();
     User getDriverById(Long userId);
-//    User getDriverByName(String name);
     List<User> getDriversByName(String name);
     Optional<User> getDriverByEmail(String email);
 

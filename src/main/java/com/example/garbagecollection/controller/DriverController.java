@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/drivers")
 @SecurityRequirement(name = "basicAuth")
-public class UserController {
+public class DriverController {
 
     @Autowired
     private UserService userService;
