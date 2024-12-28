@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;  // Import BCryptPasswordEncoder
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,14 +53,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getDriversByName(String name) {
+        return userRepository.findByFirstNameAndRole(name, User.UserRole.DRIVER);
+    }
+
+    @Override
     public Optional<User> getDriverByEmail(String email) {
         System.out.println("emailemailemailemailemailemail");
         return userRepository.findByEmail(email);
     }
+
     @Override
-    public List<User> getDriversByName(String name) {
-        return userRepository.findByFirstNameAndRole(name, User.UserRole.DRIVER);
+    public Optional<User> getUserByEmail(String email) {
+        System.out.println("emailemailemailemailemailemail");
+        return userRepository.findByEmail(email);
     }
+
     @Override
     public User updateDriver(Long id, UserRequestDTO userRequestDTO) {
         User user = getDriverById(id); // Ensure the user exists and is a driver
@@ -94,11 +103,16 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRequestDTO.getEmail());
         String passwordToUse = "";
 
+        // Prepare the response
+        UserResponseDTO userResponse = new UserResponseDTO();
+
         if (userRequestDTO.getUserRole() != null) {
             user.setRole(User.UserRole.valueOf(userRequestDTO.getUserRole().toUpperCase()));
             // If the role is ADMIN, generate a random password
             if (user.getRole() == User.UserRole.ADMIN) {
-                passwordToUse = generateRandomPassword(); // Generate a random password
+                passwordToUse = generateRandomPassword();
+                userResponse.setAdminPassword(passwordToUse);
+                // Generate a random password
             } else {
                 // Use the password from the request if not an ADMIN
                 passwordToUse = userRequestDTO.getPassword();
@@ -118,15 +132,14 @@ public class UserServiceImpl implements UserService {
         user.setToken(token);
         userRepository.save(user);
 
-
-
-        // Prepare the response
-        UserResponseDTO userResponse = new UserResponseDTO();
         userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
         userResponse.setEmail(user.getEmail());
         userResponse.setContactNumber(user.getContactNumber());
         userResponse.setUserRole(user.getRole());
+        if(userResponse.getAdminPassword() != null){
+           userResponse.getAdminPassword();
+        }
         userResponse.setToken(user.getToken());
 
         return ResponseEntity.ok(userResponse);
@@ -135,7 +148,7 @@ public class UserServiceImpl implements UserService {
     // Helper method to generate a random 6 to 8 digit password
     private String generateRandomPassword() {
         SecureRandom random = new SecureRandom();
-        int length = 6 + random.nextInt(3);  // Generate a password length between 6 and 8
+        int length = 10 + random.nextInt(3);  // Generate a password length greater than 8
         StringBuilder password = new StringBuilder(length);
 
         // Define the characters to include in the password
@@ -159,15 +172,16 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<LoginResponseDTO> loginUser(LoginRequestDTO loginRequest){
         System.out.println("Login attempt for user");
 
-        // Find user by email
-        User user = (User) userRepository.getDriverByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new UserAlreadyExistsException("user with email: " + loginRequest.getEmail() + " not found"));
 
+        // Find user by email
+        User user = (User) userRepository.getUserByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new UserAlreadyExistsException("user with email: " + loginRequest.getEmail() + " not found"));
 
         // Validate password
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
+
         System.out.println("user: " + user);
 
         LoginResponseDTO login_response = new LoginResponseDTO();

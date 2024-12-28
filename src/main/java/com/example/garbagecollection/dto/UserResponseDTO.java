@@ -15,9 +15,9 @@ public class UserResponseDTO {
 
     private String email;
 
+    private String adminPassword;
+
     private User.UserRole userRole; // Optional field for user role
-
-
 
     private String token;
 
@@ -53,6 +53,13 @@ public class UserResponseDTO {
         this.email = email;
     }
 
+    public String getAdminPassword() {
+        return adminPassword;
+    }
+
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
+    }
     public User.UserRole getUserRole() {
         return userRole;
     }

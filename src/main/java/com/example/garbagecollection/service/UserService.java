@@ -21,5 +21,6 @@ public interface UserService {
     User getDriverById(Long userId);
     List<User> getDriversByName(String name);
     Optional<User> getDriverByEmail(String email);
+    Optional<User> getUserByEmail(String email);
 
 }
