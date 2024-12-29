@@ -28,7 +28,7 @@ public class BinServiceImpl implements BinService {
         Bin bin = new Bin();
         bin.setLatitude(binRequestDTO.getLatitude());
         bin.setLongitude(binRequestDTO.getLongitude());
-        bin.setStatus(Bin.Status.valueOf(binRequestDTO.getStatus()));
+        bin.setStatus((binRequestDTO.getStatus()));
         try {
             String sensorDataJson = objectMapper.writeValueAsString(binRequestDTO.getSensorData());
             bin.setSensorData(sensorDataJson);
@@ -52,7 +52,7 @@ public class BinServiceImpl implements BinService {
         Bin bin = getBinById(id);
         bin.setLatitude(binRequestDTO.getLatitude());
         bin.setLongitude(binRequestDTO.getLongitude());
-        bin.setStatus(Bin.Status.valueOf(binRequestDTO.getStatus()));
+        bin.setStatus((binRequestDTO.getStatus()));
         try {
             String sensorDataJson = objectMapper.writeValueAsString(binRequestDTO.getSensorData());
             bin.setSensorData(sensorDataJson);
