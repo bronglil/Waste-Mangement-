@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
 
     public ResponseEntity<UserResponseDTO> createUser(UserRequestDTO userRequestDTO) {
-        Optional<User> existingUser = userRepository.findByEmail(userRequestDTO.getEmail());
+        Optional<User> existingUser = userRepository.findByEmail(userRequestDTO.getEmail().toLowerCase());
         if (existingUser.isPresent()) {
             throw new UserAlreadyExistsException("User with email " + userRequestDTO.getEmail() + " already exists");
         }
