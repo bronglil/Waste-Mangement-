@@ -34,7 +34,7 @@ public class DriverController {
         return ResponseEntity.ok(userService.getDriverById(id));
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "drivers by name", description = "get drivers by name")
     public List<User> getDriversByName(@PathVariable String name) {
