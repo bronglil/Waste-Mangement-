@@ -2,6 +2,7 @@ package com.example.garbagecollection.controller;
 
 import com.example.garbagecollection.dto.UserRequestDTO;
 import com.example.garbagecollection.dto.UserResponseDTO;
+import com.example.garbagecollection.dto.DriverWithVehicleDTO;
 import com.example.garbagecollection.entity.User;
 import com.example.garbagecollection.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,8 +25,7 @@ public class DriverController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "all drivers", description = "get a list of all drivers")
-    public ResponseEntity<List<User>> getAllDrivers() {
-
+    public ResponseEntity<List<DriverWithVehicleDTO>> getAllDrivers() {
         return ResponseEntity.ok(userService.getAllDrivers());
     }
     @GetMapping("/{id}")
