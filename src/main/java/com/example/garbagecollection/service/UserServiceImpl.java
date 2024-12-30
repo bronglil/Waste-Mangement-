@@ -5,15 +5,20 @@ import com.example.garbagecollection.dto.LoginRequestDTO;
 import com.example.garbagecollection.dto.LoginResponseDTO;
 import com.example.garbagecollection.dto.UserRequestDTO;
 import com.example.garbagecollection.dto.UserResponseDTO;
+import com.example.garbagecollection.dto.DriverWithVehicleDTO;
+import com.example.garbagecollection.dto.VehicleDTO;
 import com.example.garbagecollection.entity.User;
+import com.example.garbagecollection.entity.Vehicle;
 import com.example.garbagecollection.exception.UserAlreadyExistsException;
 import com.example.garbagecollection.repository.UserRepository;
+import com.example.garbagecollection.repository.VehicleRepository;
 import com.example.garbagecollection.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;  // Import BCryptPasswordEncoder
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,6 +35,10 @@ public class UserServiceImpl implements UserService {
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
+
+
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,8 +51,30 @@ public class UserServiceImpl implements UserService {
 
 // Driver Services
     @Override
-    public List<User> getAllDrivers() {
-        return userRepository.findByRole(User.UserRole.DRIVER);
+    public List<DriverWithVehicleDTO> getAllDrivers() {
+        List<User> drivers = userRepository.findByRole(User.UserRole.DRIVER);
+        return drivers.stream().map(driver -> {
+            DriverWithVehicleDTO dto = new DriverWithVehicleDTO();
+            dto.setUserId(driver.getId());
+            dto.setFirstName(driver.getFirstName());
+            dto.setLastName(driver.getLastName());
+            dto.setEmail(driver.getEmail());
+            dto.setContactNumber(driver.getContactNumber());
+            dto.setStatus(driver.getStatus());
+
+            Vehicle vehicle = driver.getVehicle();
+            if (vehicle != null) {
+                VehicleDTO vehicleDTO = new VehicleDTO();
+                vehicleDTO.setVehicleId(vehicle.getVehicleId());
+                vehicleDTO.setVehicleBrand(vehicle.getVehicleBrand());
+                vehicleDTO.setPlateNumber(vehicle.getPlateNumber());
+                dto.setVehicle(vehicleDTO); // Set the single vehicle
+            } else {
+                dto.setVehicle(null); // No vehicle associated
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -52,14 +84,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getDriversByName(String name) {
+        return userRepository.findByFirstNameAndRole(name, User.UserRole.DRIVER);
+    }
+
+    @Override
     public Optional<User> getDriverByEmail(String email) {
         System.out.println("emailemailemailemailemailemail");
         return userRepository.findByEmail(email);
     }
+
     @Override
-    public List<User> getDriversByName(String name) {
-        return userRepository.findByFirstNameAndRole(name, User.UserRole.DRIVER);
+    public Optional<User> getUserByEmail(String email) {
+        System.out.println("emailemailemailemailemailemail");
+        return userRepository.findByEmail(email);
     }
+
     @Override
     public User updateDriver(Long id, UserRequestDTO userRequestDTO) {
         User user = getDriverById(id); // Ensure the user exists and is a driver
@@ -69,9 +109,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<Map<String, Object>> deleteDriver(Long id) {
+        // Retrieve the driver by ID
         User user = getDriverById(id);
+
+        // Get the associated vehicle and set its user field to null
+        Vehicle vehicle = user.getVehicle();
+        if (vehicle != null) {
+            vehicle.setUser(null); // Unlink the vehicle from the driver
+            vehicleRepository.save(vehicle); // Save the vehicle to persist the change
+        }
+
+        // Delete the user
         userRepository.delete(user);
 
+        // Prepare the response
         Map<String, Object> response = new HashMap<>();
         response.put("message", "User successfully deleted");
         response.put("userId", id);
@@ -94,11 +145,16 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRequestDTO.getEmail());
         String passwordToUse = "";
 
+        // Prepare the response
+        UserResponseDTO userResponse = new UserResponseDTO();
+
         if (userRequestDTO.getUserRole() != null) {
             user.setRole(User.UserRole.valueOf(userRequestDTO.getUserRole().toUpperCase()));
             // If the role is ADMIN, generate a random password
             if (user.getRole() == User.UserRole.ADMIN) {
-                passwordToUse = generateRandomPassword(); // Generate a random password
+                passwordToUse = generateRandomPassword();
+                userResponse.setAdminPassword(passwordToUse);
+                // Generate a random password
             } else {
                 // Use the password from the request if not an ADMIN
                 passwordToUse = userRequestDTO.getPassword();
@@ -118,15 +174,14 @@ public class UserServiceImpl implements UserService {
         user.setToken(token);
         userRepository.save(user);
 
-
-
-        // Prepare the response
-        UserResponseDTO userResponse = new UserResponseDTO();
         userResponse.setFirstName(user.getFirstName());
         userResponse.setLastName(user.getLastName());
         userResponse.setEmail(user.getEmail());
         userResponse.setContactNumber(user.getContactNumber());
         userResponse.setUserRole(user.getRole());
+        if(userResponse.getAdminPassword() != null){
+           userResponse.getAdminPassword();
+        }
         userResponse.setToken(user.getToken());
 
         return ResponseEntity.ok(userResponse);
@@ -135,7 +190,7 @@ public class UserServiceImpl implements UserService {
     // Helper method to generate a random 6 to 8 digit password
     private String generateRandomPassword() {
         SecureRandom random = new SecureRandom();
-        int length = 6 + random.nextInt(3);  // Generate a password length between 6 and 8
+        int length = 10 + random.nextInt(3);  // Generate a password length greater than 8
         StringBuilder password = new StringBuilder(length);
 
         // Define the characters to include in the password
@@ -156,30 +211,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<LoginResponseDTO> loginUser(LoginRequestDTO loginRequest){
+    public ResponseEntity<LoginResponseDTO> loginUser(LoginRequestDTO loginRequest) {
         System.out.println("Login attempt for user");
 
         // Find user by email
-        User user = (User) userRepository.getDriverByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new UserAlreadyExistsException("user with email: " + loginRequest.getEmail() + " not found"));
-
+        User user = (User) userRepository.getUserByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new UserAlreadyExistsException("User with email: " + loginRequest.getEmail() + " not found"));
 
         // Validate password
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
-        System.out.println("user: " + user);
 
-        LoginResponseDTO login_response = new LoginResponseDTO();
-        login_response.setFirstName(user.getFirstName());
-        login_response.setLastName(user.getLastName());
-        login_response.setEmail(user.getEmail());
-        login_response.setContactNumber(user.getContactNumber());
-        login_response.setUserRole(user.getRole());
-        login_response.setUserId(user.getId());
-        login_response.setToken(user.getToken());
+        // Check if the token is expired
+        String token = user.getToken();
+        if (jwtUtil.isTokenExpired(token)) {
+            // Generate a new token if expired
+            token = jwtUtil.generateToken(user.getEmail());
+            user.setToken(token);
+            userRepository.save(user); // Save the new token to the database
+        }
 
-        return ResponseEntity.ok(login_response);
+        // Prepare the login response
+        LoginResponseDTO loginResponse = new LoginResponseDTO();
+        loginResponse.setFirstName(user.getFirstName());
+        loginResponse.setLastName(user.getLastName());
+        loginResponse.setEmail(user.getEmail());
+        loginResponse.setContactNumber(user.getContactNumber());
+        loginResponse.setUserRole(user.getRole());
+        loginResponse.setUserId(user.getId());
+        loginResponse.setToken(token); // Return the current (or new) token
+
+        return ResponseEntity.ok(loginResponse);
     }
 
     public void updateUserFields(User user, UserRequestDTO dto) {

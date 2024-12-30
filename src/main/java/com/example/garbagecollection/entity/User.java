@@ -3,6 +3,7 @@ package com.example.garbagecollection.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -41,6 +42,8 @@ public class User {
     @Column(nullable = false)
     private String token;
 
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Vehicle vehicle;
 
     // Enum for Role
     public enum UserRole {
@@ -139,5 +142,12 @@ public class User {
         this.token = token;
     }
 
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicles(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
 
 }

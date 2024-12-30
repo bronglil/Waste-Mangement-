@@ -46,7 +46,7 @@ public class JwtUtil {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -60,7 +60,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 180)) // 6 months
                 .signWith(getSigningKey())
                 .compact();
     }

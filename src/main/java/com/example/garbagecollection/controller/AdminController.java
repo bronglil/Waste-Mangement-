@@ -1,5 +1,6 @@
 package com.example.garbagecollection.controller;
 
+import com.example.garbagecollection.dto.DriverWithVehicleDTO;
 import com.example.garbagecollection.dto.UserRequestDTO;
 import com.example.garbagecollection.dto.UserResponseDTO;
 import com.example.garbagecollection.entity.User;
@@ -61,7 +62,7 @@ class AdminController {
 
     @GetMapping("/get_drivers")
     @Operation(summary = "all drivers", description = "get a list of all drivers")
-    public ResponseEntity<List<User>> getAllDrivers() {
+    public ResponseEntity<List<DriverWithVehicleDTO>> getAllDrivers() {
 
         return ResponseEntity.ok(userService.getAllDrivers());
     }

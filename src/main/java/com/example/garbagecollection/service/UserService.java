@@ -1,9 +1,6 @@
 package com.example.garbagecollection.service;
 
-import com.example.garbagecollection.dto.LoginRequestDTO;
-import com.example.garbagecollection.dto.LoginResponseDTO;
-import com.example.garbagecollection.dto.UserRequestDTO;
-import com.example.garbagecollection.dto.UserResponseDTO;
+import com.example.garbagecollection.dto.*;
 import com.example.garbagecollection.entity.User;
 import org.springframework.http.ResponseEntity;
 
@@ -17,9 +14,11 @@ public interface UserService {
     User updateDriver(Long id, UserRequestDTO userRequestDTO);
     ResponseEntity<Map<String, Object>> deleteDriver(Long id);
     List<User> getUsersWithoutVehicles();
-    List<User> getAllDrivers();
+//    List<User> getAllDrivers();
+    List<DriverWithVehicleDTO> getAllDrivers();
     User getDriverById(Long userId);
     List<User> getDriversByName(String name);
     Optional<User> getDriverByEmail(String email);
+    Optional<User> getUserByEmail(String email);
 
 }
