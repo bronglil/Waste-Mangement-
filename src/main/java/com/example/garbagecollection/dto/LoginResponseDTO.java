@@ -19,8 +19,6 @@ public class LoginResponseDTO {
 
     private User.UserRole userRole; // Optional field for user role
 
-
-
     private String token;
 
     public Long getUserId() {
