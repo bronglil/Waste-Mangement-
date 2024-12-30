@@ -211,31 +211,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<LoginResponseDTO> loginUser(LoginRequestDTO loginRequest){
+    public ResponseEntity<LoginResponseDTO> loginUser(LoginRequestDTO loginRequest) {
         System.out.println("Login attempt for user");
-
 
         // Find user by email
         User user = (User) userRepository.getUserByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new UserAlreadyExistsException("user with email: " + loginRequest.getEmail() + " not found"));
+                .orElseThrow(() -> new UserAlreadyExistsException("User with email: " + loginRequest.getEmail() + " not found"));
 
         // Validate password
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
-        System.out.println("user: " + user);
+        // Check if the token is expired
+        String token = user.getToken();
+        if (jwtUtil.isTokenExpired(token)) {
+            // Generate a new token if expired
+            token = jwtUtil.generateToken(user.getEmail());
+            user.setToken(token);
+            userRepository.save(user); // Save the new token to the database
+        }
 
-        LoginResponseDTO login_response = new LoginResponseDTO();
-        login_response.setFirstName(user.getFirstName());
-        login_response.setLastName(user.getLastName());
-        login_response.setEmail(user.getEmail());
-        login_response.setContactNumber(user.getContactNumber());
-        login_response.setUserRole(user.getRole());
-        login_response.setUserId(user.getId());
-        login_response.setToken(user.getToken());
+        // Prepare the login response
+        LoginResponseDTO loginResponse = new LoginResponseDTO();
+        loginResponse.setFirstName(user.getFirstName());
+        loginResponse.setLastName(user.getLastName());
+        loginResponse.setEmail(user.getEmail());
+        loginResponse.setContactNumber(user.getContactNumber());
+        loginResponse.setUserRole(user.getRole());
+        loginResponse.setUserId(user.getId());
+        loginResponse.setToken(token); // Return the current (or new) token
 
-        return ResponseEntity.ok(login_response);
+        return ResponseEntity.ok(loginResponse);
     }
 
     public void updateUserFields(User user, UserRequestDTO dto) {
