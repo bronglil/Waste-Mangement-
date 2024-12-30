@@ -19,8 +19,11 @@ public class Bin {
     private double longitude;
 
     @Setter
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private int status;
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     @Setter
     private LocalDateTime lastUpdated;
@@ -52,7 +55,7 @@ public class Bin {
         this.longitude = longitude;
     }
 
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
@@ -68,9 +71,7 @@ public class Bin {
         return locationName;
     }
 
-    public enum Status {
-        FULL, EMPTY
-    }
+
 
 
 
