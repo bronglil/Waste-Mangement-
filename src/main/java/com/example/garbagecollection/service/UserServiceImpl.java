@@ -49,6 +49,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmailController emailController;
 
+    @Override
+    public List<User> getAdminUsers() {
+        return userRepository.findUsersByRole("ADMIN");
+    }
+
 // Driver Services
     @Override
     public List<DriverWithVehicleDTO> getAllDrivers() {
@@ -274,4 +279,5 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
 }
