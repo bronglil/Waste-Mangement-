@@ -10,4 +10,6 @@ public interface BinService {
     Bin getBinById(Long id);
     Bin updateBin(Long id, BinRequestDTO binRequestDTO);
     void deleteBin(Long id);
+    Bin patchBin(Long id, BinRequestDTO binRequestDTO);
+
 }
