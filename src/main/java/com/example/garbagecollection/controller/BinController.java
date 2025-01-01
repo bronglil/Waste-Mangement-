@@ -55,4 +55,10 @@ public class BinController {
         return geocodingService.getLocationDataByName(location);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Bin> patchBin(@PathVariable Long id, @RequestBody BinRequestDTO binRequestDTO) {
+        Bin updatedBin = binService.patchBin(id, binRequestDTO);
+        return ResponseEntity.ok(updatedBin);
+    }
+
 }
