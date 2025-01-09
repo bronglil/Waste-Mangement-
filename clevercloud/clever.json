@@ -1,0 +1,8 @@
+{
+  "build": {
+    "goal": "bootJar"
+  },
+  "deploy": {
+    "command": "./gradlew bootRun"
+  }
+}
