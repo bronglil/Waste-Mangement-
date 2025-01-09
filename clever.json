@@ -1,7 +1,0 @@
-{
-  "deploy": {
-    "gradle": {
-      "goal": "build"
-    }
-  }
-}
