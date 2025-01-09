@@ -1,4 +1,3 @@
 #!/bin/bash
-chmod 777 ../gradlew
-cd ..
+chmod 777 gradlew
 ./gradlew assemble
