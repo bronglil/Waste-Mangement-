@@ -1,9 +1,9 @@
 {
-    "build": {
-      "type": "gradle",
-      "goal": "assemble"
-    },
-    "deploy": {
-      "jarName": "./build/libs/garbagecollection-0.0.1-SNAPSHOT.jar"
-    }
+  "build": {
+    "type": "custom",
+    "script": "./clevercloud.sh"
+  },
+  "deploy": {
+    "jarName": "./build/libs/garbagecollection-0.0.1-SNAPSHOT.jar"
   }
+}
