@@ -444,3 +444,9 @@ UPDATE "PUBLIC"."BINS" SET "ID"=? ,"LAST_UPDATED"=? ,"LATITUDE"=? ,"LOCATION_NAM
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1570)
+2025-01-09 19:42:11.863615+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'48,3' (BINS: ""LATITUDE"" FLOAT(53) NOT NULL)"; SQL statement:
+UPDATE "PUBLIC"."BINS" SET "ID"=? ,"LAST_UPDATED"=? ,"LATITUDE"=? ,"LOCATION_NAME"=? ,"LONGITUDE"=? ,"SENSOR_DATA"=? ,"STATUS"=?  WHERE "ID"=? [22018-224]
+2025-01-09 19:42:11.866613+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'48,3' (BINS: ""LATITUDE"" FLOAT(53) NOT NULL)"; SQL statement:
+UPDATE "PUBLIC"."BINS" SET "ID"=? ,"LAST_UPDATED"=? ,"LATITUDE"=? ,"LOCATION_NAME"=? ,"LONGITUDE"=? ,"SENSOR_DATA"=? ,"STATUS"=?  WHERE "ID"=? [22018-224]

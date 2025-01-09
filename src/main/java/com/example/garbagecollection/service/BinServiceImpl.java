@@ -73,7 +73,7 @@ public class BinServiceImpl implements BinService {
         Bin bin = getBinById(id);
 
         // Update status if provided in the request
-        if (binRequestDTO.getStatus() == (int) Double.NaN) {
+        if (binRequestDTO.getStatus() != null) {
             bin.setStatus(binRequestDTO.getStatus());
         }
 
@@ -92,6 +92,7 @@ public class BinServiceImpl implements BinService {
 
         return binRepository.save(bin);
     }
+
 
 
 }
