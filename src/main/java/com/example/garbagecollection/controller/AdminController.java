@@ -91,4 +91,10 @@ class AdminController {
         return userService.deleteDriver(id);
     }
 
+    @GetMapping("/admins")
+    public ResponseEntity<List<User>> getAdminUsers() {
+        List<User> adminUsers = userService.getAdminUsers();
+        return ResponseEntity.ok(adminUsers);
+    }
+
 }

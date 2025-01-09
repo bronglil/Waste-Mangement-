@@ -10,7 +10,7 @@ import java.util.Map;
 public class BinRequestDTO {
     private double latitude;
     private double longitude;
-    private int status;
+    private Integer status;
     private Map<String, Object> sensorData;
     private String locationName;
 }

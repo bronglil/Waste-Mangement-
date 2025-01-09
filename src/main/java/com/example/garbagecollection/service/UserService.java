@@ -21,4 +21,5 @@ public interface UserService {
     Optional<User> getDriverByEmail(String email);
     Optional<User> getUserByEmail(String email);
 
+    List<User> getAdminUsers();
 }

@@ -68,4 +68,31 @@ public class BinServiceImpl implements BinService {
     public void deleteBin(Long id) {
         binRepository.deleteById(id);
     }
+    @Override
+    public Bin patchBin(Long id, BinRequestDTO binRequestDTO) {
+        Bin bin = getBinById(id);
+
+        // Update status if provided in the request
+        if (binRequestDTO.getStatus() != null) {
+            bin.setStatus(binRequestDTO.getStatus());
+        }
+
+        // Update sensorData if provided in the request
+        if (binRequestDTO.getSensorData() != null) {
+            try {
+                String sensorDataJson = objectMapper.writeValueAsString(binRequestDTO.getSensorData());
+                bin.setSensorData(sensorDataJson);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Failed to convert sensor data to JSON", e);
+            }
+        }
+
+        // Update the last updated timestamp
+        bin.setLastUpdated(LocalDateTime.now());
+
+        return binRepository.save(bin);
+    }
+
+
+
 }
