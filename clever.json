@@ -1,5 +1,7 @@
 {
-  "build": {
-    "goal": "bootJar"
+  "deploy": {
+    "gradle": {
+      "goal": "bootJar"
+    }
   }
 }
