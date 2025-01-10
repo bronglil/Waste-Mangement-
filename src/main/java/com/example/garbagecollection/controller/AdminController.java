@@ -37,7 +37,7 @@ class AdminController {
         return ResponseEntity.ok(adminService.getAllAdmins());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/ByID/{id}")
     public User getAdminById(@PathVariable Long id) {
         return adminService.getAdminById(id);
     }
