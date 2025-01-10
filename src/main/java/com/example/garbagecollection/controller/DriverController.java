@@ -42,6 +42,7 @@ public class DriverController {
     }
 
     @PostMapping
+    @Operation(summary = "create driver", description = "create a single driver")
     public ResponseEntity<UserResponseDTO> createDriver(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.createUser(userRequestDTO);
     }

@@ -1,18 +1,17 @@
 package com.example.garbagecollection.service;
 
-import com.example.garbagecollection.dto.VehicleRequestDto;
-import com.example.garbagecollection.entity.Vehicle;
+import com.example.garbagecollection.dto.VehicleRequestDTO;
 
 import java.util.List;
 
 public interface VehicleService {
-    VehicleRequestDto createVehicle(VehicleRequestDto vehicleDto);
+    VehicleRequestDTO createVehicle(VehicleRequestDTO vehicleDto);
 
-    VehicleRequestDto getVehicleById(Long id);
+    VehicleRequestDTO getVehicleById(Long id);
 
-    List<VehicleRequestDto> getAllVehicles();
+    List<VehicleRequestDTO> getAllVehicles();
 
-    VehicleRequestDto updateVehicle(Long id, VehicleRequestDto vehicleDto);
+    VehicleRequestDTO updateVehicle(Long id, VehicleRequestDTO vehicleDto);
 
     void deleteVehicle(Long id);
 }

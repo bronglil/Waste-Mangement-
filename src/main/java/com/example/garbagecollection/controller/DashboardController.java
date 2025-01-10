@@ -1,6 +1,7 @@
 package com.example.garbagecollection.controller;
 
 import com.example.garbagecollection.service.DashboardService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     @GetMapping("/metrics")
+    @Operation(summary = "dashboard metrics", description = "data metrics to be displayed on dashboard")
     public ResponseEntity<Map<String, Long>> getDashboardMetrics() {
         return ResponseEntity.ok(dashboardService.getDashboardMetrics());
     }

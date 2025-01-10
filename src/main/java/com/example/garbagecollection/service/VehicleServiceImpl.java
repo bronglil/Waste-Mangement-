@@ -1,7 +1,6 @@
 package com.example.garbagecollection.service;
-import com.example.garbagecollection.dto.DriverDto;
-import com.example.garbagecollection.dto.UserRequestDTO;
-import com.example.garbagecollection.dto.VehicleRequestDto;
+import com.example.garbagecollection.dto.DriverDTO;
+import com.example.garbagecollection.dto.VehicleRequestDTO;
 import com.example.garbagecollection.entity.User;
 import com.example.garbagecollection.entity.Vehicle;
 import com.example.garbagecollection.repository.UserRepository;
@@ -21,7 +20,7 @@ public class VehicleServiceImpl implements VehicleService {
     private UserRepository userRepository;
 
     @Override
-    public VehicleRequestDto createVehicle(VehicleRequestDto vehicleDto) {
+    public VehicleRequestDTO createVehicle(VehicleRequestDTO vehicleDto) {
         System.out.println("Creating vehicle with details: " + vehicleDto); // Log the incoming DTO
 
         if (vehicleDto.getPlateNumber() == null || vehicleDto.getPlateNumber().isEmpty()) {
@@ -48,14 +47,14 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleRequestDto getVehicleById(Long id) {
+    public VehicleRequestDTO getVehicleById(Long id) {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
         return mapToDto(vehicle);
     }
 
     @Override
-    public List<VehicleRequestDto> getAllVehicles() {
+    public List<VehicleRequestDTO> getAllVehicles() {
         return vehicleRepository.findAll()
                 .stream()
                 .map(this::mapToDto)
@@ -63,7 +62,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleRequestDto updateVehicle(Long id, VehicleRequestDto vehicleDto) {
+    public VehicleRequestDTO updateVehicle(Long id, VehicleRequestDTO vehicleDto) {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
@@ -90,15 +89,15 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleRepository.delete(vehicle);
     }
 
-    private VehicleRequestDto mapToDto(Vehicle vehicle) {
-        VehicleRequestDto dto = new VehicleRequestDto();
+    private VehicleRequestDTO mapToDto(Vehicle vehicle) {
+        VehicleRequestDTO dto = new VehicleRequestDTO();
         dto.setVehicleId(vehicle.getVehicleId());
         dto.setVehicleBrand(vehicle.getVehicleBrand());
         dto.setPlateNumber(vehicle.getPlateNumber());
 
         if (vehicle.getUser() != null) {
             User driver = vehicle.getUser(); // Get the driver User entity
-            DriverDto driverDto = new DriverDto();
+            DriverDTO driverDto = new DriverDTO();
             driverDto.setUserId(driver.getId());
             driverDto.setFirstName(driver.getFirstName());
             driverDto.setLastName(driver.getLastName());

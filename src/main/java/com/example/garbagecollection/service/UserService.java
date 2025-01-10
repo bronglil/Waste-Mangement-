@@ -14,12 +14,10 @@ public interface UserService {
     User updateDriver(Long id, UserRequestDTO userRequestDTO);
     ResponseEntity<Map<String, Object>> deleteDriver(Long id);
     List<User> getUsersWithoutVehicles();
-//    List<User> getAllDrivers();
     List<DriverWithVehicleDTO> getAllDrivers();
     User getDriverById(Long userId);
     List<User> getDriversByName(String name);
     Optional<User> getDriverByEmail(String email);
     Optional<User> getUserByEmail(String email);
-
     List<User> getAdminUsers();
 }

@@ -10,8 +10,6 @@ public class DriverWithVehicleDTO {
     private String email;
     private String contactNumber;
     private UserStatus status;
-
-    //    private List<VehicleDTO> vehicles;
     private VehicleDTO vehicle;
 
     // Getters and Setters
@@ -63,14 +61,6 @@ public class DriverWithVehicleDTO {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
-
-//    public List<VehicleDTO> getVehicles() {
-//        return vehicles;
-//    }
-//
-//    public void setVehicles(List<VehicleDTO> vehicles) {
-//        this.vehicles = vehicles;
-//    }
 
     public VehicleDTO getVehicle() {
         return vehicle;

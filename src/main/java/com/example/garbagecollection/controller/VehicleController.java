@@ -1,7 +1,8 @@
 package com.example.garbagecollection.controller;
 
-import com.example.garbagecollection.dto.VehicleRequestDto;
+import com.example.garbagecollection.dto.VehicleRequestDTO;
 import com.example.garbagecollection.service.VehicleService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,26 +17,31 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @PostMapping
-    public ResponseEntity<VehicleRequestDto> createVehicle(@RequestBody VehicleRequestDto vehicleDto) {
+    @Operation(summary = "add vehicle", description = "create a vehicle")
+    public ResponseEntity<VehicleRequestDTO> createVehicle(@RequestBody VehicleRequestDTO vehicleDto) {
         return ResponseEntity.ok(vehicleService.createVehicle(vehicleDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VehicleRequestDto> getVehicleById(@PathVariable Long id) {
+    @Operation(summary = "get vehicle", description = "get a single vehicle by id")
+    public ResponseEntity<VehicleRequestDTO> getVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<VehicleRequestDto>> getAllVehicles() {
+    @Operation(summary = "get  vehicles", description = "get all vehicles")
+    public ResponseEntity<List<VehicleRequestDTO>> getAllVehicles() {
         return ResponseEntity.ok(vehicleService.getAllVehicles());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VehicleRequestDto> updateVehicle(@PathVariable Long id, @RequestBody VehicleRequestDto vehicleDto) {
+    @Operation(summary = "update vehicle", description = "update a single vehicle by id")
+    public ResponseEntity<VehicleRequestDTO> updateVehicle(@PathVariable Long id, @RequestBody VehicleRequestDTO vehicleDto) {
         return ResponseEntity.ok(vehicleService.updateVehicle(id, vehicleDto));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "delete vehicle", description = "delete a single vehicle by id")
     public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
         vehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
