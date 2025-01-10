@@ -33,7 +33,7 @@ To run the backend application, ensure you have the following installed:
 Clone the backend repository to your local machine:
 
 ```bash
-git clone git@github.com:Irfan-Ullah-cs/Waste-Mangement-System.git
+git clone git@github.com:bronglil/Waste-Mangement-.git
 cd Waste-Mangement-System
 ```
 
@@ -43,12 +43,35 @@ The backend uses an embedded H2 database by default. The configuration is locate
 
 Default H2 configuration:
 ```properties
-spring.datasource.url=jdbc:h2:mem:waste_management_db
-spring.datasource.driverClassName=org.h2.Driver
+spring.application.name=garbagecollection
+
+# Spring Boot: configure H2 datasource
+spring.datasource.url=jdbc:h2:file:./database/main
 spring.datasource.username=sa
-spring.datasource.password=password
+spring.datasource.password=passpass
+spring.datasource.driverClassName=org.h2.Driver
 spring.jpa.hibernate.ddl-auto=update
+
+# Spring Boot: activate H2 console
 spring.h2.console.enabled=true
+spring.h2.console.path=/console
+
+# APIs configuration
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.enabled=true
+springdoc.api-docs.enabled=true
+
+# Security configuration
+spring.security.user.name=admin
+spring.security.user.password=admin123
+
+# JWT secret
+jwt.secret=dK3yqWbvX9Zp2mNcR5tJ7hFgE4nM8sBaL6wY1xV0jH4uQ9kD2pT5nR8mC3fA7vB
+
+# Server configuration
+server.address=0.0.0.0
+server.port=8080
 ```
 
 You can access the H2 database console at: http://localhost:8080/h2-console
