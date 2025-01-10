@@ -6,6 +6,7 @@ import com.example.garbagecollection.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class AdminServiceImpl implements AdminService{
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllAdmins() {
@@ -58,6 +62,32 @@ public class AdminServiceImpl implements AdminService{
         user.setContactNumber(dto.getContactNumber());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
+
+        if(dto.getFirstName() != null){
+            user.setFirstName(dto.getFirstName());
+        }
+        if (dto.getLastName() != null){
+            user.setLastName(dto.getLastName());
+        }
+        if (dto.getContactNumber() != null){
+            user.setContactNumber(dto.getContactNumber());
+        }
+        if(dto.getEmail() != null){
+            if (!(user.getEmail().equals(dto.getEmail())))
+            {
+                user.setEmail(dto.getEmail());
+            }
+
+        }
+        if (dto.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        if (dto.getUserRole() != null){
+            user.setRole(User.UserRole.valueOf(dto.getUserRole().toUpperCase()));
+        }
+        if (dto.getUserStatus() != null){
+            user.setStatus(User.UserStatus.valueOf(dto.getUserStatus().toUpperCase()));
+        }
 
     }
 }

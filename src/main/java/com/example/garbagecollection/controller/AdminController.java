@@ -37,7 +37,7 @@ class AdminController {
         return ResponseEntity.ok(adminService.getAllAdmins());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/ByID/{id}")
     public User getAdminById(@PathVariable Long id) {
         return adminService.getAdminById(id);
     }
@@ -84,6 +84,7 @@ class AdminController {
     public User updateDriver(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         return userService.updateDriver(id, userRequestDTO);
     }
+
 
     @DeleteMapping("/remove_driver/{id}")
     @Operation(summary = "delete driver by id", description = "get driver by id and delete the driver")
