@@ -85,6 +85,7 @@ class AdminController {
         return userService.updateDriver(id, userRequestDTO);
     }
 
+
     @DeleteMapping("/remove_driver/{id}")
     @Operation(summary = "delete driver by id", description = "get driver by id and delete the driver")
     public ResponseEntity<Map<String, Object>> deleteDriver(@PathVariable Long id) {
