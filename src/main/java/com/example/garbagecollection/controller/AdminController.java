@@ -30,13 +30,6 @@ class AdminController {
     @Autowired
     private UserService userService;
 
-
-    @GetMapping
-    public ResponseEntity<List<User>> getAllAdmins() {
-
-        return ResponseEntity.ok(adminService.getAllAdmins());
-    }
-
     @GetMapping("/ByID/{id}")
     @Operation(summary = "single admin", description = "get a single admin by id")
     public User getAdminById(@PathVariable Long id) {
@@ -93,7 +86,7 @@ class AdminController {
     }
 
     @GetMapping("/admins")
-    @Operation(summary = "all admins", description = "get all admins by id")
+    @Operation(summary = "all admins", description = "get all admins ")
     public ResponseEntity<List<User>> getAdminUsers() {
         List<User> adminUsers = userService.getAdminUsers();
         return ResponseEntity.ok(adminUsers);
