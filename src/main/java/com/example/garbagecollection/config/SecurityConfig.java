@@ -44,8 +44,9 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                         .allowedOrigins("http://localhost:8081")
-                        .allowedOrigins("https://waste-management-server.cleverapps.io/")
+//                         .allowedOrigins("http://localhost:8081")
+//                        .allowedOrigins("https://waste-management-server.cleverapps.io/")
+                        .allowedOriginPatterns("*") // Allow all origins
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Specify allowed methods
                         .allowedHeaders("*") // Allow all headers
                         .allowCredentials(true); // Allow credentials
