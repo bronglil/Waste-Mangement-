@@ -118,7 +118,6 @@ java {
 
 ### Vehicle Management
 - Fleet tracking
-- Maintenance schedules
 - Route assignments
 
 ## API Documentation
