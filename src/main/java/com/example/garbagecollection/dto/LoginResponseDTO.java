@@ -9,6 +9,7 @@ public class LoginResponseDTO {
 
 
     private Long userId;
+
     private String firstName;
 
     private String lastName;
