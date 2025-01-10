@@ -40,12 +40,6 @@ public class AuthenticationController {
     @Autowired
     private JwtUtil jwtUtil; // Inject JwtUtil
 
-//    @PostMapping("/signup")
-//    @Operation(summary = "signup users", description = "add new users")
-//    public ResponseEntity<UserResponseDTO> signup(@Valid  @RequestBody UserRequestDTO signupRequest, BindingResult result) {
-//        return userService.createUser(signupRequest);
-//    }
-
     @PostMapping("/signup")
     @Operation(summary = "signup users", description = "add new users")
     public ResponseEntity<?> signup(@Valid @RequestBody UserRequestDTO signupRequest) {

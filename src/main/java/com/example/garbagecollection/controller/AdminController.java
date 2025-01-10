@@ -38,24 +38,24 @@ class AdminController {
     }
 
     @GetMapping("/ByID/{id}")
+    @Operation(summary = "single admin", description = "get a single admin by id")
     public User getAdminById(@PathVariable Long id) {
         return adminService.getAdminById(id);
     }
 
     @GetMapping("/{name}")
+    @Operation(summary = "single admin", description = "get a single admin by name")
     public List<User> getAdminsByName(@PathVariable String name) {
         return adminService.getAdminsByName(name);
     }
 
-    //    @PostMapping
-//    public ResponseEntity<User> createAdmin(@RequestBody UserRequestDTO userRequestDTO) {
-//        return ResponseEntity.ok(userService.createAdmin(userRequestDTO));
-//    }
     @PutMapping("/{id}")
+    @Operation(summary = "update admin", description = "update single admin by id")
     public User updateAdmin(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         return adminService.updateAdmin(id, userRequestDTO);
     }
     @DeleteMapping("/{id}")
+    @Operation(summary = "delete admin", description = "delete a single admin by id")
     public void deleteAdmin(@PathVariable Long id) {
         adminService.deleteAdmin(id);
     }
@@ -93,6 +93,7 @@ class AdminController {
     }
 
     @GetMapping("/admins")
+    @Operation(summary = "all admins", description = "get all admins by id")
     public ResponseEntity<List<User>> getAdminUsers() {
         List<User> adminUsers = userService.getAdminUsers();
         return ResponseEntity.ok(adminUsers);
